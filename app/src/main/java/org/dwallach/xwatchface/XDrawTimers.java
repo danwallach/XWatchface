@@ -186,7 +186,7 @@ public class XDrawTimers {
                 drawStyle = styleNormal;
 
             // timer hand will sweep counterclockwise from 12 o'clock back to 12 again when it's done
-            float angle = (float) timerRemaining / (float) timerDuration * (float) Math.PI;
+            float angle = (float) timerRemaining / (float) timerDuration * (float) Math.PI * 2f;
 
             float length = centerX - 20;
 
