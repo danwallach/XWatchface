@@ -114,8 +114,8 @@ public class XDrawTimers {
 
         for(int style=0; style < styleMax; style++) {
             paintBucket[style][colorStopwatchSecondHand] = getPaint(0xff80A3F2, style, 2f);  // light blue
-            paintBucket[style][colorStopwatchMinuteHand] = getPaint(0xff80A3F2, style, 3f);  // light blue
-            paintBucket[style][colorTimerHand] = getPaint(0xFFF2CF80, style, 2f); // orange-ish
+            paintBucket[style][colorStopwatchMinuteHand] = getPaint(0xff80A3F2, style, 8f);  // light blue
+            paintBucket[style][colorTimerHand] = getPaint(0xFFF2CF80, style, 8f); // orange-ish
         }
     }
 
@@ -158,9 +158,11 @@ public class XDrawTimers {
             float secLength = centerX - 20;
             float minLength = centerX - 40;
 
-            float secX = (float) Math.sin(secRot) * secLength;
-            float secY = (float) -Math.cos(secRot) * secLength;
-            canvas.drawLine(centerX, centerY, centerX + secX, centerY + secY, paintBucket[drawStyle][colorStopwatchSecondHand]);
+            if(!ambientMode) {
+                float secX = (float) Math.sin(secRot) * secLength;
+                float secY = (float) -Math.cos(secRot) * secLength;
+                canvas.drawLine(centerX, centerY, centerX + secX, centerY + secY, paintBucket[drawStyle][colorStopwatchSecondHand]);
+            }
 
             float minX = (float) Math.sin(minRot) * minLength;
             float minY = (float) -Math.cos(minRot) * minLength;
