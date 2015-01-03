@@ -14,7 +14,7 @@ public class XDrawTimers {
     private static long stopwatchStartTime;
     private static long stopwatchPriorTime;
     private static boolean stopwatchIsRunning;
-    private static boolean stopwatchIsReset;
+    private static boolean stopwatchIsReset = true;
     private static long stopwatchUpdateTimestamp = 0;
 
     public static long getStopwatchUpdateTimestamp() {
@@ -37,7 +37,7 @@ public class XDrawTimers {
     private static long timerPauseDelta;
     private static long timerDuration;
     private static boolean timerIsRunning;
-    private static boolean timerIsReset;
+    private static boolean timerIsReset = true;
     private static long timerUpdateTimestamp = 0;
 
     public static long getTimerUpdateTimestamp() {
@@ -184,7 +184,7 @@ public class XDrawTimers {
                 drawStyle = styleNormal;
 
             // timer hand will sweep counterclockwise from 12 o'clock back to 12 again when it's done
-            float angle = timerRemaining / timerDuration * (float) Math.PI;
+            float angle = (float) timerRemaining / (float) timerDuration * (float) Math.PI;
 
             float length = centerX - 20;
 
