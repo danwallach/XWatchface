@@ -1,7 +1,6 @@
 /*
- * This software is an extension of code subject to the below license:
- *
  * Copyright (C) 2014 The Android Open Source Project
+ * (with additions by Dan Wallach <dwallach@rice.edu>)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.

@@ -1,13 +1,25 @@
+/*
+ * Copyright (C) 2014 Dan Wallach <dwallach@rice.edu>
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package org.dwallach.xwatchface;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.os.SystemClock;
 import android.util.Log;
 
-/**
- * Created by dwallach on 1/2/15.
- */
 public class XDrawTimers {
     private static final String TAG = "XDrawTimers";
 
@@ -188,7 +200,7 @@ public class XDrawTimers {
             // timer hand will sweep counterclockwise from 12 o'clock back to 12 again when it's done
             float angle = (float) timerRemaining / (float) timerDuration * (float) Math.PI * 2f;
 
-            float length = centerX - 20;
+            float length = centerX / 2;
 
             float x = (float) Math.sin(angle) * length;
             float y = (float) -Math.cos(angle) * length;
