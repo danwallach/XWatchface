@@ -126,7 +126,7 @@ public class XDrawTimers {
 
         for(int style=0; style < styleMax; style++) {
             paintBucket[style][colorStopwatchSecondHand] = getPaint(0xff80A3F2, style, 2f);  // light blue
-            paintBucket[style][colorStopwatchMinuteHand] = getPaint(0xff80A3F2, style, 8f);  // light blue
+            paintBucket[style][colorStopwatchMinuteHand] = getPaint(0xff80A3F2, style, 4f);  // light blue
             paintBucket[style][colorTimerHand] = getPaint(0xFFF2CF80, style, 8f); // orange-ish
         }
     }
