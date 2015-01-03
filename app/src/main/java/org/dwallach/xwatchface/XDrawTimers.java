@@ -110,11 +110,14 @@ public class XDrawTimers {
 
                 int y = (int) (fy * 255);
 
-                retPaint.setColor((a << 24) | (y << 16) | (y << 8) | y);
+                int bwcolor = (a << 24) | (y << 16) | (y << 8) | y;
+
+//                Log.v(TAG, String.format("argb:%06x -> %06x", argb, bwcolor));
+
+                retPaint.setColor(bwcolor);
 
                 break;
         }
-        retPaint.setColor(argb);
 
         return retPaint;
     }
@@ -124,7 +127,7 @@ public class XDrawTimers {
 
         paintBucket = new Paint[styleMax+1][colorMax+1];
 
-        for(int style=0; style < styleMax; style++) {
+        for(int style=0; style <= styleMax; style++) {
             paintBucket[style][colorStopwatchSecondHand] = getPaint(0xff80A3F2, style, 2f);  // light blue
             paintBucket[style][colorStopwatchMinuteHand] = getPaint(0xff80A3F2, style, 4f);  // light blue
             paintBucket[style][colorTimerHand] = getPaint(0xFFF2CF80, style, 8f); // orange-ish
@@ -145,6 +148,14 @@ public class XDrawTimers {
         float centerX = width / 2f;
         float centerY = height / 2f;
 
+        int drawStyle;
+
+        if (ambientMode)
+            drawStyle = styleAmbient;
+        else
+            drawStyle = styleNormal;
+
+
         // we don't draw anything if the stopwatch is non-moving and at 00:00.00
         if(!stopwatchIsReset) {
             if (!stopwatchIsRunning) {
@@ -152,13 +163,6 @@ public class XDrawTimers {
             } else {
                 stopwatchRenderTime = currentTime - stopwatchStartTime + stopwatchPriorTime;
             }
-
-            int drawStyle;
-
-            if (ambientMode)
-                drawStyle = styleAmbient;
-            else
-                drawStyle = styleNormal;
 
             // code borrowed/derived from SweepWatchFace
 
@@ -189,13 +193,6 @@ public class XDrawTimers {
                 timerRemaining = timerDuration  - currentTime + timerStartTime;
             }
             if(timerRemaining < 0) timerRemaining = 0;
-
-            int drawStyle;
-
-            if (ambientMode)
-                drawStyle = styleAmbient;
-            else
-                drawStyle = styleNormal;
 
             // timer hand will sweep counterclockwise from 12 o'clock back to 12 again when it's done
             float angle = (float) timerRemaining / (float) timerDuration * (float) Math.PI * 2f;
