@@ -15,15 +15,26 @@ public class XWatchfaceReceiver extends BroadcastReceiver {
     private static final String prefStopwatchPriorTime = "priorTime";
     private static final String prefStopwatchUpdateTimestamp = "updateTimestamp";
 
-    private static final String stopwatchUpdateIntent = "org.dwallach.x.stopwatch.update";
+    public static final String prefTimerRunning = "running";
+    public static final String prefTimerReset = "reset";
+    public static final String prefTimerStartTime = "startTime";
+    public static final String prefTimerPauseDelta = "pauseDelta";
+    public static final String prefTimerDuration = "duration";
+    public static final String prefTimerUpdateTimestamp = "updateTimestamp";
 
+    private static final String stopwatchUpdateIntent = "org.dwallach.x.stopwatch.update";
     public static final String stopwatchQueryIntent = "org.dwallach.x.stopwatch.query";
+
+    private static final String timerUpdateIntent = "org.dwallach.x.timer.update";
+    public static final String timerQueryIntent = "org.dwallach.x.timer.query";
 
     @Override
     public void onReceive(Context context, Intent intent) {
         Log.v(TAG, "got intent: " + intent.toString());
 
-        if(intent.getAction().equals(stopwatchUpdateIntent)) {
+        String action = intent.getAction();
+
+        if(action.equals(stopwatchUpdateIntent)) {
             Bundle extras = intent.getExtras();
             long startTime = extras.getLong(prefStopwatchStartTime);
             long priorTime = extras.getLong(prefStopwatchPriorTime);
@@ -39,6 +50,25 @@ public class XWatchfaceReceiver extends BroadcastReceiver {
                     ")");
 
             XDrawTimers.setStopwatchState(startTime, priorTime, isRunning, isReset, updateTimestamp);
+
+        } else if (action.equals(timerUpdateIntent)) {
+            Bundle extras = intent.getExtras();
+            long startTime = extras.getLong(prefTimerStartTime);
+            long pauseDelta = extras.getLong(prefTimerPauseDelta);
+            long duration = extras.getLong(prefTimerDuration);
+            boolean isRunning = extras.getBoolean(prefTimerRunning);
+            boolean isReset = extras.getBoolean(prefTimerReset);
+            long updateTimestamp = extras.getLong(prefTimerUpdateTimestamp);
+
+            Log.v(TAG, "timer udpate:: startTime(" + startTime +
+                    "), pauseDelta(" + pauseDelta +
+                    "), duration(" + duration +
+                    "), isRunning(" + isRunning +
+                    "), isReset(" + isReset +
+                    "), updateTimestamp(" + updateTimestamp +
+                    ")");
+
+            XDrawTimers.setTimerState(startTime, pauseDelta, duration, isRunning, isReset, updateTimestamp);
         }
     }
 
@@ -53,6 +83,10 @@ public class XWatchfaceReceiver extends BroadcastReceiver {
         if(XDrawTimers.getStopwatchUpdateTimestamp() == 0) {
             Log.v(TAG, "sending broadcast query for external stopwatches");
             context.sendBroadcast(new Intent(stopwatchQueryIntent));
+        }
+        if(XDrawTimers.getTimerUpdateTimestamp() == 0) {
+            Log.v(TAG, "sending broadcast query for external timers");
+            context.sendBroadcast(new Intent(timerQueryIntent));
         }
     }
 }

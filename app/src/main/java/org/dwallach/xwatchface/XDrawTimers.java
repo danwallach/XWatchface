@@ -32,6 +32,30 @@ public class XDrawTimers {
         }
     }
 
+
+    private static long timerStartTime;
+    private static long timerPauseDelta;
+    private static long timerDuration;
+    private static boolean timerIsRunning;
+    private static boolean timerIsReset;
+    private static long timerUpdateTimestamp = 0;
+
+    public static long getTimerUpdateTimestamp() {
+        return timerUpdateTimestamp;
+    }
+
+    public static void setTimerState(long startTime, long pauseDelta, long duration, boolean isRunning, boolean isReset, long updateTimestamp) {
+        // ignore old / stale updates
+        if(updateTimestamp > timerUpdateTimestamp) {
+            timerStartTime = startTime;
+            timerPauseDelta = pauseDelta;
+            timerDuration = duration;
+            timerIsRunning = isRunning;
+            timerIsReset = isReset;
+            timerUpdateTimestamp = updateTimestamp;
+        }
+    }
+
     private static Paint paintBucket[][];
 
     private static final int styleNormal = 0;
@@ -141,6 +165,32 @@ public class XDrawTimers {
             float minX = (float) Math.sin(minRot) * minLength;
             float minY = (float) -Math.cos(minRot) * minLength;
             canvas.drawLine(centerX, centerY, centerX + minX, centerY + minY, paintBucket[drawStyle][colorStopwatchMinuteHand]);
+        }
+
+        long timerRemaining = 0; // should go from 0 to timerDuration, where 0 means we're done
+        if(!timerIsReset) {
+            if (!timerIsRunning) {
+                timerRemaining = timerDuration - timerPauseDelta;
+            } else {
+                timerRemaining = timerDuration  - currentTime + timerStartTime;
+            }
+            if(timerRemaining < 0) timerRemaining = 0;
+
+            int drawStyle;
+
+            if (ambientMode)
+                drawStyle = styleAmbient;
+            else
+                drawStyle = styleNormal;
+
+            // timer hand will sweep counterclockwise from 12 o'clock back to 12 again when it's done
+            float angle = timerRemaining / timerDuration * (float) Math.PI;
+
+            float length = centerX - 20;
+
+            float x = (float) Math.sin(angle) * length;
+            float y = (float) -Math.cos(angle) * length;
+            canvas.drawLine(centerX, centerY, centerX + x, centerY + y, paintBucket[drawStyle][colorTimerHand]);
         }
     }
 }
