@@ -78,10 +78,13 @@ public class XWatchfaceService extends CanvasWatchFaceService {
 
         @Override
         public void onCreate(SurfaceHolder holder) {
+            super.onCreate(holder);
+
             if (Log.isLoggable(TAG, Log.DEBUG)) {
                 Log.d(TAG, "onCreate");
             }
-            super.onCreate(holder);
+
+            XWatchfaceReceiver.pingExternalStopwatches(XWatchfaceService.this);
 
             setWatchFaceStyle(new WatchFaceStyle.Builder(XWatchfaceService.this)
                     .setCardPeekMode(WatchFaceStyle.PEEK_MODE_SHORT)
@@ -120,6 +123,7 @@ public class XWatchfaceService extends CanvasWatchFaceService {
         @Override
         public void onPropertiesChanged(Bundle properties) {
             super.onPropertiesChanged(properties);
+
             mLowBitAmbient = properties.getBoolean(PROPERTY_LOW_BIT_AMBIENT, false);
             if (Log.isLoggable(TAG, Log.DEBUG)) {
                 Log.d(TAG, "onPropertiesChanged: low-bit ambient = " + mLowBitAmbient);
@@ -238,6 +242,8 @@ public class XWatchfaceService extends CanvasWatchFaceService {
             super.onVisibilityChanged(visible);
 
             if (visible) {
+                XWatchfaceReceiver.pingExternalStopwatches(XWatchfaceService.this);
+
                 registerReceiver();
 
                 // Update time zone in case it changed while we weren't visible.
