@@ -241,8 +241,6 @@ public class XWatchfaceService extends CanvasWatchFaceService {
             super.onVisibilityChanged(visible);
 
             if (visible) {
-                XWatchfaceReceiver.pingExternalStopwatches(XWatchfaceService.this);
-
                 registerReceiver();
 
                 // Update time zone in case it changed while we weren't visible.

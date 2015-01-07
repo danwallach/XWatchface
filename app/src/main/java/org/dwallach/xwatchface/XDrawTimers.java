@@ -23,51 +23,6 @@ import android.util.Log;
 public class XDrawTimers {
     private static final String TAG = "XDrawTimers";
 
-    private static long stopwatchStartTime;
-    private static long stopwatchPriorTime;
-    private static boolean stopwatchIsRunning;
-    private static boolean stopwatchIsReset = true;
-    private static long stopwatchUpdateTimestamp = 0;
-
-    public static long getStopwatchUpdateTimestamp() {
-        return stopwatchUpdateTimestamp;
-    }
-
-    public static void setStopwatchState(long startTime, long priorTime, boolean isRunning, boolean isReset, long updateTimestamp) {
-        // ignore old / stale updates
-        if(updateTimestamp > stopwatchUpdateTimestamp) {
-            stopwatchStartTime = startTime;
-            stopwatchPriorTime = priorTime;
-            stopwatchIsRunning = isRunning;
-            stopwatchIsReset = isReset;
-            stopwatchUpdateTimestamp = updateTimestamp;
-        }
-    }
-
-
-    private static long timerStartTime;
-    private static long timerPauseDelta;
-    private static long timerDuration;
-    private static boolean timerIsRunning;
-    private static boolean timerIsReset = true;
-    private static long timerUpdateTimestamp = 0;
-
-    public static long getTimerUpdateTimestamp() {
-        return timerUpdateTimestamp;
-    }
-
-    public static void setTimerState(long startTime, long pauseDelta, long duration, boolean isRunning, boolean isReset, long updateTimestamp) {
-        // ignore old / stale updates
-        if(updateTimestamp > timerUpdateTimestamp) {
-            timerStartTime = startTime;
-            timerPauseDelta = pauseDelta;
-            timerDuration = duration;
-            timerIsRunning = isRunning;
-            timerIsReset = isReset;
-            timerUpdateTimestamp = updateTimestamp;
-        }
-    }
-
     private static Paint paintBucket[][];
 
     private static final int styleNormal = 0;
@@ -157,11 +112,11 @@ public class XDrawTimers {
 
 
         // we don't draw anything if the stopwatch is non-moving and at 00:00.00
-        if(!stopwatchIsReset) {
-            if (!stopwatchIsRunning) {
-                stopwatchRenderTime = stopwatchPriorTime;
+        if(!XWatchfaceReceiver.stopwatchIsReset) {
+            if (!XWatchfaceReceiver.stopwatchIsRunning) {
+                stopwatchRenderTime = XWatchfaceReceiver.stopwatchBase;
             } else {
-                stopwatchRenderTime = currentTime - stopwatchStartTime + stopwatchPriorTime;
+                stopwatchRenderTime = currentTime - XWatchfaceReceiver.stopwatchStart + XWatchfaceReceiver.stopwatchBase;
             }
 
             // code borrowed/derived from SweepWatchFace
@@ -186,16 +141,16 @@ public class XDrawTimers {
         }
 
         long timerRemaining = 0; // should go from 0 to timerDuration, where 0 means we're done
-        if(!timerIsReset) {
-            if (!timerIsRunning) {
-                timerRemaining = timerDuration - timerPauseDelta;
+        if(!XWatchfaceReceiver.timerIsReset) {
+            if (!XWatchfaceReceiver.timerIsRunning) {
+                timerRemaining = XWatchfaceReceiver.timerDuration - XWatchfaceReceiver.timerPauseElapsed;
             } else {
-                timerRemaining = timerDuration  - currentTime + timerStartTime;
+                timerRemaining = XWatchfaceReceiver.timerDuration  - currentTime + XWatchfaceReceiver.timerStart;
             }
             if(timerRemaining < 0) timerRemaining = 0;
 
             // timer hand will sweep counterclockwise from 12 o'clock back to 12 again when it's done
-            float angle = (float) timerRemaining / (float) timerDuration * (float) Math.PI * 2f;
+            float angle = (float) timerRemaining / (float) XWatchfaceReceiver.timerDuration * (float) Math.PI * 2f;
 
             float length = centerX / 2;
 
