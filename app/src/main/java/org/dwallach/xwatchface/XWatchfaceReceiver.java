@@ -73,7 +73,7 @@ public class XWatchfaceReceiver extends BroadcastReceiver {
      * Is the stopwatch reset? If so, you can assume it's not running and the value is zero.
      * You can furthermore not bother rendering it at all.
      */
-    public static boolean stopwatchIsReset;
+    public static boolean stopwatchIsReset = true; // default until we get a useful broadcast message
 
     /**
      * The last time at which we received an update to the stopwatch status. If the user is,
@@ -113,7 +113,7 @@ public class XWatchfaceReceiver extends BroadcastReceiver {
      * Is the timer reset? If so, you can assume its value is equal to the duration.
      * You can also assume it's not running and you may choose not to display anything at all.
      */
-    public static boolean timerIsReset;
+    public static boolean timerIsReset = true; // default until we get a useful broadcast message
 
     /**
      * The last time at which we received an update to the timer status. If the user is,
@@ -136,7 +136,7 @@ public class XWatchfaceReceiver extends BroadcastReceiver {
             stopwatchIsReset = extras.getBoolean(prefStopwatchReset);
             stopwatchUpdateTimestamp = extras.getLong(prefStopwatchUpdateTimestamp);
 
-            Log.v(TAG, "stopwatch update: start(" + stopwatchStart +
+            Log.v(TAG, "stopwatch update:: start(" + stopwatchStart +
                     "), base(" + stopwatchBase +
                     "), isRunning(" + stopwatchIsRunning +
                     "), isReset(" + stopwatchIsReset +
@@ -151,6 +151,15 @@ public class XWatchfaceReceiver extends BroadcastReceiver {
             timerIsRunning = extras.getBoolean(prefTimerRunning);
             timerIsReset = extras.getBoolean(prefTimerReset);
             timerUpdateTimestamp = extras.getLong(prefTimerUpdateTimestamp);
+
+            // sanity checking: if we're coming back from whatever and a formerly running
+            // timer has gotten way past the deadline, then just reset things.
+            long currentTime = System.currentTimeMillis();
+            if(timerIsRunning && timerStart + timerDuration < currentTime) {
+                timerIsReset = true;
+                timerIsRunning = false;
+            }
+
 
             Log.v(TAG, "timer udpate:: start(" + timerStart +
                     "), elapsed(" + timerPauseElapsed +
