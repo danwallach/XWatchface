@@ -39,3 +39,10 @@ If the stopwatch is reset, it draws nothing. If it's in ambient mode, it just dr
 the minute hand. For the timer, it only draws one hand that sweeps counterclockwise,
 starting and ending at 12 o'clock. You should, of course, feel free to embellish on
 this and do something else.
+
+
+
+Note / warning: This Android Studio project isn't set up to produce something that
+you can just upload to the Google Play Store. For that, you also need to set up a
+"wrapper" mobile app.
+https://developer.android.com/training/wearables/apps/packaging.html
