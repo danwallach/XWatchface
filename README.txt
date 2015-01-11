@@ -19,7 +19,7 @@ This is a very simple Android Wear watchface based on the example watchface apps
 distributed by Google.
 
 What's useful and interesting is that it shows you how listen to broadcasts from a
-stopwatch and timer and render them. Some useful things to examine:
+stopwatch and timer and render them. Some things to examine:
 
 AndroidMainfest.xml: This is pretty much exactly what you'd expect to see for any
 watchface, except for the <receiver> element, which says that we're interested in
@@ -41,8 +41,19 @@ starting and ending at 12 o'clock. You should, of course, feel free to embellish
 this and do something else.
 
 
+RELATED LINKS
 
-Note / warning: This Android Studio project isn't set up to produce something that
+XStopwatch & XTimer: Two apps in one APK which implement a stopwatch and an timer.
+https://play.google.com/store/apps/details?id=org.dwallach.xstopwatch
+http://www.cs.rice.edu/~dwallach/xstopwatch/
+https://github.com/danwallach/XStopwatch
+
+CalWatch: A full-featured Wear watchface that also renders timers and stopwatches.
+https://play.google.com/store/apps/details?id=org.dwallach.calwatch
+http://www.cs.rice.edu/~dwallach/calwatch/
+https://github.com/danwallach/CalWatch
+
+Note / warning: This XWatchface Android Studio project isn't set up to produce something that
 you can just upload to the Google Play Store. For that, you also need to set up a
 "wrapper" mobile app.
 https://developer.android.com/training/wearables/apps/packaging.html
